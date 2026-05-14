@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>InfraLab Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+</head>
+
+<body>
+
+    <h1>InfraLab Dashboard</h1>
+
+    <hr>
+
+    <div class="cards">
+
+    	<div class="card">
+
+            <h2>Clientes</h2>
+
+            <p id="clientes">{{ clientes }}</p>
+    	
+	</div>
+
+    	<div class="card">
+
+            <h2>Requests</h2>
+
+            <p id="requests">{{ requests }}</p>
+
+    	</div>
+
+    	<div class="card">
+
+            <h2>Métricas</h2>
+
+            <p id="metricas">{{ metricas }}</p>
+
+    	</div>
+
+    </div>
+
+    <p>Último servidor: {{ ultimo_servidor }}</p>
+
+    <hr>
+
+    <h2>Última métrica</h2>
+
+    <div class="chart-container">
+
+    	<canvas id="cpuChart"></canvas>
+
+	</div>
+
+    <div class="chart-container">
+
+    	<canvas id="ramChart"></canvas>
+
+    </div>
+
+    <div class="chart-container">
+
+    	<canvas id="latenciaChart"></canvas>
+
+    </div>
+
+    <h2>CPU</h2>
+    <p>CPU: {{ cpu }}%</p>
+
+    <h2>RAM</h2>
+    <p>RAM: {{ ram }}%</p>
+
+    <h2>Latencia</h2>
+    <p>Latencia: {{ latencia }} ms</p>
+
+    <script>
+
+const cpuData = {{ cpu_historial }};
+
+const ramData = {{ ram_historial }};
+
+const latenciaData = {{ latencia_historial }};
+
+new Chart(document.getElementById('cpuChart'), {
+
+    type: 'line',
+
+    data: {
+
+        labels: cpuData.map((_, i) => i + 1),
+
+        datasets: [{
+
+            label: 'CPU %',
+
+            data: cpuData
+
+        }]
+
+    }
+    
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false
+
+    }
+
+});
+
+new Chart(document.getElementById('ramChart'), {
+
+    type: 'line',
+
+    data: {
+
+        labels: ramData.map((_, i) => i + 1),
+
+        datasets: [{
+
+            label: 'RAM %',
+
+            data: ramData
+
+        }]
+
+    }
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false
+
+    }
+
+});
+
+
+new Chart(document.getElementById('latenciaChart'), {
+
+    type: 'line',
+
+    data: {
+
+    	labels: latenciaData.map((_, i) => i + 1),
+
+        datasets: [{
+
+        	label: 'Latencia ms',
+
+        	data: latenciaData
+
+        }]
+
+    }
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false
+
+    }
+
+});
+
+</script>
+
+<script>
+	
+const cpuData = {{ cpu_historial }};
+
+const ramData = {{ ram_historial }};
+
+const latenciaData = {{ latencia_historial }};
+
+</script>
+
+<script src="/static/charts.js"></script>
+
+</body>
+
+</html>
