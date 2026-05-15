@@ -58,12 +58,28 @@ while True:
         )
 
 
-        print(response.json())
+        print(
 
+            f"[OK] "
+
+            f"{time.strftime('%H:%M:%S')} "
+
+            f"{response.status_code}",
+
+            flush=True
+        )
 
     except Exception as e:
 
-        print("Error:", e)
+        print(
 
+            f"[ERROR] "
+
+            f"{time.strftime('%H:%M:%S')} "
+
+            f"{e}",
+
+            flush=True
+        )
 
     time.sleep(5)
