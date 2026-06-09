@@ -2,14 +2,18 @@ from fastapi import APIRouter, Request
 
 from fastapi.templating import Jinja2Templates
 
-from db import conectar_db
-
 from services.dashboard_service import obtener_dashboard
 
 router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
 
+@router.get("/")
+def root():  
+
+    return {
+        "mensaje": "InfraLab Server Online"
+    }
 
 @router.get("/dashboard")
 

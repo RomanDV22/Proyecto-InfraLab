@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>InfraLab Agents</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial;
+
+            background: #111;
+
+            color: white;
+
+            padding: 30px;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th, td {
+
+            border: 1px solid #333;
+
+            padding: 12px;
+
+            text-align: center;
+
+        }
+
+
+        th {
+
+            background: #222;
+
+        }
+
+
+        .online {
+
+            color: #00ff88;
+
+            font-weight: bold;
+
+        }
+
+
+        .offline {
+
+            color: #ff4444;
+
+            font-weight: bold;
+
+        }
+	
+	a {
+
+    	    color: #00ccff;
+
+    	    text-decoration: none;
+
+    	    font-weight: bold;
+
+	}
+
+
+	a:hover {
+
+    	    text-decoration: underline;
+
+	}
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>InfraLab Agents</h1>
+
+
+    <table>
+
+        <tr>
+
+            <th>Status</th>
+
+            <th>Server</th>
+
+            <th>CPU %</th>
+
+            <th>RAM %</th>
+
+            <th>IP</th>
+
+	    <th>OS</th>
+
+	    <th>Usuario</th>
+
+	    <th>Python</th>
+            
+	    <th>Last Report</th>
+
+        </tr>
+
+
+        {% for agente in agentes %}
+
+        <tr>
+
+            <td>
+
+                {% if agente.online %}
+
+                    <span class="online">ONLINE</span>
+
+                {% else %}
+
+                    <span class="offline">OFFLINE</span>
+
+                {% endif %}
+
+            </td>
+
+
+	    <td>
+
+    		<a href="/agente/{{ agente.servidor }}">
+
+        	{{ agente.servidor }}
+
+    		</a>
+
+	    </td>
+            
+	    <td>{{ agente.cpu }}</td>
+
+            <td>{{ agente.ram }}</td>
+
+            <td>{{ agente.ip }}</td>
+
+            <td>{{ agente.os }}</td>
+
+	    <td>{{ agente.usuario }}</td>
+
+            <td>{{ agente.python_version }}</td>
+
+	    <td>{{ agente.timestamp }}</td>
+        
+	</tr>
+
+        {% endfor %}
+
+    </table>
+
+</body>
+
+</html>

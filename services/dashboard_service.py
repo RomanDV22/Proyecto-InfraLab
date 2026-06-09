@@ -35,7 +35,9 @@ def obtener_dashboard():
 
     """)
 
-    ultimo_servidor = cursor.fetchone()[0]
+    ultimo_servidor_fila = cursor.fetchone()
+
+    ultimo_servidor = ultimo_servidor_fila[0] if ultimo_servidor_fila else "Sin datos"
 
 
     cursor.execute("""
@@ -85,11 +87,11 @@ def obtener_dashboard():
 
     for fila in historico:
 
-        cpu_historial.append(fila[0])
+        cpu_historial.append(float(fila[0]))
 
-        ram_historial.append(fila[1])
+        ram_historial.append(float(fila[1]))
 
-        latencia_historial.append(fila[2])
+        latencia_historial.append(float(fila[2]))
 
 
     cursor.close()
@@ -107,11 +109,11 @@ def obtener_dashboard():
 
         "ultimo_servidor": ultimo_servidor,
 
-        "cpu": ultima_metrica[0],
+        "cpu": float(ultima_metrica[0]) if ultima_metrica else 0,
 
-        "ram": ultima_metrica[1],
+        "ram": float(ultima_metrica[1]) if ultima_metrica else 0,
 
-        "latencia": ultima_metrica[2],
+        "latencia": float(ultima_metrica[2]) if ultima_metrica else 0,
 
         "cpu_historial": cpu_historial,
 
