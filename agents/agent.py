@@ -9,6 +9,7 @@ import psutil
 
 import os
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 
 from datetime import datetime
 
@@ -19,13 +20,56 @@ load_dotenv()
 
 URL = os.getenv("SERVER_URL")
 
+if not URL:
+    raise RuntimeError("SERVER_URL no esta definido en .env")
+
+
+def obtener_ip_local():
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as conexion:
+            conexion.connect(("8.8.8.8", 80))
+            return conexion.getsockname()[0]
+    except OSError:
+        return socket.gethostbyname(socket.gethostname())
+
+
+def obtener_estado_internet():
+    try:
+        with socket.create_connection(("1.1.1.1", 53), timeout=2):
+            return "online"
+    except OSError:
+        return "offline"
+
+
+def medir_latencia_servidor(url):
+    partes = urlparse(url)
+    host = partes.hostname
+
+    if not host:
+        return 0
+
+    if partes.port:
+        port = partes.port
+    elif partes.scheme == "https":
+        port = 443
+    else:
+        port = 80
+
+    inicio = time.perf_counter()
+
+    try:
+        with socket.create_connection((host, port), timeout=3):
+            return round((time.perf_counter() - inicio) * 1000, 2)
+    except OSError:
+        return 0
+
 while True:
 
     try:
 
         hostname = socket.gethostname()
 
-        ip_local = socket.gethostbyname(hostname)
+        ip_local = obtener_ip_local()
 
         cpu = psutil.cpu_percent()
 
@@ -79,9 +123,9 @@ while True:
 
             "ip_local": ip_local,
 
-            "internet": "online",
+            "internet": obtener_estado_internet(),
 
-            "latencia_ms": 0,
+            "latencia_ms": medir_latencia_servidor(URL),
 
             "cpu_porcentaje": cpu,
 

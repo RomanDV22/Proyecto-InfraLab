@@ -16,6 +16,7 @@ The goal of the project is to monitor systems, collect metrics, visualize histor
 - Request logging
 - Metrics storage
 - Real-time updates
+- Healthcheck endpoint
 - Modular architecture
 
 ---
@@ -74,6 +75,12 @@ psql -U postgres -d infralab -f database/schema.sql
 
 More details are available in [docs/database.md](docs/database.md).
 
+Useful guides:
+
+- [Startup runbook](docs/runbook.md)
+- [Database documentation](docs/database.md)
+- [Network lab notes](docs/network-lab.md)
+
 ---
 
 ## Run Server
@@ -90,6 +97,12 @@ Open browser:
 
 ```text
 http://SERVER_IP:8000/dashboard
+```
+
+Healthcheck:
+
+```text
+http://SERVER_IP:8000/health
 ```
 
 ---

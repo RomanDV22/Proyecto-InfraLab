@@ -1,25 +1,22 @@
 from routes.dashboard import router as dashboard_router
 from routes.api import router as api_router
-from db import conectar_db
-from fastapi import FastAPI, Request
-import psutil
-import socket
-import requests
-import time
+from fastapi import FastAPI
 import subprocess
 
-#from fastapi import Request
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from routes.agentes import router as agentes_router
 from routes.agente import router as agente_router
+from routes.health import router as health_router
+from routes.metricas import router as metricas_router
 
 app = FastAPI()
 app.include_router(dashboard_router)
 app.include_router(api_router)
 app.include_router(agentes_router)
 app.include_router(agente_router)
+app.include_router(health_router)
+app.include_router(metricas_router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 def obtener_mac(ip):
