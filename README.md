@@ -39,7 +39,7 @@ The goal of the project is to monitor systems, collect metrics, visualize histor
 Clone repository:
 
 ```bash
-git clone https://github.com/RomanDV22/Infralab.git
+git clone https://github.com/RomanDV22/Proyecto-InfraLab.git
 ```
 
 Enter project:
@@ -65,6 +65,14 @@ Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+
+Create the PostgreSQL database schema:
+
+```bash
+psql -U postgres -d infralab -f database/schema.sql
+```
+
+More details are available in [docs/database.md](docs/database.md).
 
 ---
 
