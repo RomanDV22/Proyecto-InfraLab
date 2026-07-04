@@ -1,88 +1,89 @@
-from db import conectar_db
+from db import conectar_db, liberar_db
 
 
 def obtener_agente(nombre):
 
     conexion = conectar_db()
 
-    cursor = conexion.cursor()
+    try:
+        cursor = conexion.cursor()
 
 
-    cursor.execute("""
+        cursor.execute("""
 
-        SELECT
+            SELECT
 
-            timestamp,
-            cpu_porcentaje,
-            ram_porcentaje,
-            ip_local
+                timestamp,
+                cpu_porcentaje,
+                ram_porcentaje,
+                ip_local
 
-        FROM metricas
+            FROM metricas
 
-        WHERE servidor = %s
+            WHERE servidor = %s
 
-        ORDER BY timestamp DESC
+            ORDER BY timestamp DESC
 
-        LIMIT 20
+            LIMIT 20
 
-    """, (nombre,))
-
-
-    metricas = cursor.fetchall()
+        """, (nombre,))
 
 
-    metricas.reverse()
+        metricas = cursor.fetchall()
 
-    if not metricas:
+
+        metricas.reverse()
+
+        if not metricas:
+
+            cursor.close()
+
+            return None
+
+        ultima = metricas[-1]
+
+        timestamps = []
+
+        cpu = []
+
+        ram = []
+
+
+        for metrica in metricas:
+
+            timestamps.append(
+
+                metrica[0].strftime("%H:%M:%S")
+
+            )
+
+            cpu.append(metrica[1])
+
+            ram.append(metrica[2])
+
 
         cursor.close()
-        conexion.close()
-
-        return None
-    
-    ultima = metricas[-1]
-
-    timestamps = []
-
-    cpu = []
-
-    ram = []
 
 
-    for metrica in metricas:
+        return {
 
-        timestamps.append(
+            "servidor": nombre,
 
-            metrica[0].strftime("%H:%M:%S")
+            "timestamps": timestamps,
 
-        )
+            "cpu": cpu,
 
-        cpu.append(metrica[1])
+            "ram": ram,
 
-        ram.append(metrica[2])
+            "ultima_cpu": ultima[1],
 
+            "ultima_ram": ultima[2],
 
-    cursor.close()
+            "ultima_ip": ultima[3],
 
-    conexion.close()
+            "ultimo_timestamp": ultima[0]
 
+        }
 
-    return {
-
-        "servidor": nombre,
-
-        "timestamps": timestamps,
-
-        "cpu": cpu,
-
-        "ram": ram,
-        
-        "ultima_cpu": ultima[1],
-
-        "ultima_ram": ultima[2],
-
-        "ultima_ip": ultima[3],
-
-        "ultimo_timestamp": ultima[0]
-    
-    }
+    finally:
+        liberar_db(conexion)

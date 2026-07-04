@@ -23,6 +23,13 @@ URL = os.getenv("SERVER_URL")
 if not URL:
     raise RuntimeError("SERVER_URL no esta definido en .env")
 
+API_KEY = os.getenv("API_KEY")
+
+if not API_KEY:
+    raise RuntimeError("API_KEY no esta definido en .env")
+
+HEADERS = {"X-API-Key": API_KEY}
+
 
 def obtener_ip_local():
     try:
@@ -161,9 +168,10 @@ while True:
 
 
         response = requests.post(
-    	    
+
 	    URL,
     	    json=datos,
+            headers=HEADERS,
             timeout=5
 	)
 

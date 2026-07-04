@@ -25,13 +25,17 @@ DB_HOST=localhost
 DB_NAME=infralab
 DB_USER=roman
 DB_PASSWORD=tu_password
+API_KEY=una_clave_larga_compartida
 ```
 
 El agente necesita:
 
 ```env
 SERVER_URL=http://IP_DEL_SERVIDOR:8000/api/metricas
+API_KEY=una_clave_larga_compartida
 ```
+
+`API_KEY` debe ser igual en el servidor y en cada agente: el servidor rechaza con 401 cualquier `POST /api/metricas` sin el header `X-API-Key` correcto.
 
 En una prueba local, puede ser:
 

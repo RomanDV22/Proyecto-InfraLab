@@ -1,124 +1,126 @@
-from db import conectar_db
+from db import conectar_db, liberar_db
 
 
 def obtener_dashboard():
 
     conexion = conectar_db()
 
-    cursor = conexion.cursor()
+    try:
+        cursor = conexion.cursor()
 
 
-    cursor.execute("SELECT COUNT(*) FROM clientes")
+        cursor.execute("SELECT COUNT(*) FROM clientes")
 
-    total_clientes = cursor.fetchone()[0]
-
-
-    cursor.execute("SELECT COUNT(*) FROM requests")
-
-    total_requests = cursor.fetchone()[0]
+        total_clientes = cursor.fetchone()[0]
 
 
-    cursor.execute("SELECT COUNT(*) FROM metricas")
+        cursor.execute("SELECT COUNT(*) FROM requests")
 
-    total_metricas = cursor.fetchone()[0]
-
-
-    cursor.execute("""
-
-        SELECT servidor
-
-        FROM metricas
-
-        ORDER BY id DESC
-
-        LIMIT 1
-
-    """)
-
-    ultimo_servidor_fila = cursor.fetchone()
-
-    ultimo_servidor = ultimo_servidor_fila[0] if ultimo_servidor_fila else "Sin datos"
+        total_requests = cursor.fetchone()[0]
 
 
-    cursor.execute("""
+        cursor.execute("SELECT COUNT(*) FROM metricas")
 
-        SELECT
-
-            cpu_porcentaje,
-            ram_porcentaje,
-            latencia_ms
-
-        FROM metricas
-
-        ORDER BY id DESC
-
-        LIMIT 1
-
-    """)
-
-    ultima_metrica = cursor.fetchone()
+        total_metricas = cursor.fetchone()[0]
 
 
-    cursor.execute("""
+        cursor.execute("""
 
-        SELECT
+            SELECT servidor
 
-            cpu_porcentaje,
-            ram_porcentaje,
-            latencia_ms
+            FROM metricas
 
-        FROM metricas
+            ORDER BY id DESC
 
-        ORDER BY id DESC
+            LIMIT 1
 
-        LIMIT 10
+        """)
 
-    """)
+        ultimo_servidor_fila = cursor.fetchone()
 
-    historico = cursor.fetchall()
+        ultimo_servidor = ultimo_servidor_fila[0] if ultimo_servidor_fila else "Sin datos"
 
 
-    cpu_historial = []
+        cursor.execute("""
 
-    ram_historial = []
+            SELECT
 
-    latencia_historial = []
+                cpu_porcentaje,
+                ram_porcentaje,
+                latencia_ms
 
+            FROM metricas
 
-    for fila in historico:
+            ORDER BY id DESC
 
-        cpu_historial.append(float(fila[0]))
+            LIMIT 1
 
-        ram_historial.append(float(fila[1]))
+        """)
 
-        latencia_historial.append(float(fila[2]))
-
-
-    cursor.close()
-
-    conexion.close()
+        ultima_metrica = cursor.fetchone()
 
 
-    return {
+        cursor.execute("""
 
-        "clientes": total_clientes,
+            SELECT
 
-        "requests": total_requests,
+                cpu_porcentaje,
+                ram_porcentaje,
+                latencia_ms
 
-        "metricas": total_metricas,
+            FROM metricas
 
-        "ultimo_servidor": ultimo_servidor,
+            ORDER BY id DESC
 
-        "cpu": float(ultima_metrica[0]) if ultima_metrica else 0,
+            LIMIT 10
 
-        "ram": float(ultima_metrica[1]) if ultima_metrica else 0,
+        """)
 
-        "latencia": float(ultima_metrica[2]) if ultima_metrica else 0,
+        historico = cursor.fetchall()
 
-        "cpu_historial": cpu_historial,
 
-        "ram_historial": ram_historial,
+        cpu_historial = []
 
-        "latencia_historial": latencia_historial
+        ram_historial = []
 
-    }
+        latencia_historial = []
+
+
+        for fila in historico:
+
+            cpu_historial.append(float(fila[0]))
+
+            ram_historial.append(float(fila[1]))
+
+            latencia_historial.append(float(fila[2]))
+
+
+        cursor.close()
+
+
+        return {
+
+            "clientes": total_clientes,
+
+            "requests": total_requests,
+
+            "metricas": total_metricas,
+
+            "ultimo_servidor": ultimo_servidor,
+
+            "cpu": float(ultima_metrica[0]) if ultima_metrica else 0,
+
+            "ram": float(ultima_metrica[1]) if ultima_metrica else 0,
+
+            "latencia": float(ultima_metrica[2]) if ultima_metrica else 0,
+
+            "cpu_historial": cpu_historial,
+
+            "ram_historial": ram_historial,
+
+            "latencia_historial": latencia_historial
+
+        }
+
+    finally:
+        liberar_db(conexion)

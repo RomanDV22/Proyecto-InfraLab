@@ -49,6 +49,27 @@ Campos actuales:
 - `metodo`: metodo HTTP.
 - `timestamp`: fecha y hora del request.
 
+### alertas
+
+Guarda las alertas generadas automaticamente cuando una metrica supera un umbral (CPU, RAM o disco por encima de 90%). Hay un cooldown de 5 minutos por servidor y tipo de alerta para evitar spam.
+
+Campos actuales:
+
+- `servidor`: equipo que disparo la alerta.
+- `tipo`: `cpu_alto`, `ram_alta` o `disco_alto`.
+- `mensaje`: descripcion legible.
+- `valor`: valor que disparo la alerta.
+- `timestamp`: fecha y hora de la alerta.
+
+Se consulta en `/alertas` (HTML) y `/api/alertas` (JSON).
+
+Como la tabla la crea el usuario `postgres`, hay que otorgarle permisos al usuario de la aplicacion:
+
+```sql
+GRANT SELECT, INSERT, UPDATE ON alertas TO roman;
+GRANT USAGE, SELECT ON SEQUENCE alertas_id_seq TO roman;
+```
+
 ## Crear la Base desde Cero
 
 Entrar a PostgreSQL:
@@ -86,12 +107,20 @@ DB_HOST=localhost
 DB_NAME=infralab
 DB_USER=roman
 DB_PASSWORD=tu_password
+API_KEY=una_clave_larga_compartida
 ```
 
-El agente lee la URL del servidor:
+`API_KEY` la valida el servidor en cada `POST /api/metricas` (header `X-API-Key`). Generar una con:
+
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+El agente lee la URL del servidor y la misma `API_KEY`:
 
 ```env
 SERVER_URL=http://IP_DEL_SERVIDOR:8000/api/metricas
+API_KEY=una_clave_larga_compartida
 ```
 
 ## Roles de PostgreSQL

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>InfraLab Alertas</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial;
+
+            background: #111;
+
+            color: white;
+
+            padding: 30px;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th, td {
+
+            border: 1px solid #333;
+
+            padding: 12px;
+
+            text-align: center;
+
+        }
+
+
+        th {
+
+            background: #222;
+
+        }
+
+
+        .cpu_alto, .ram_alta, .disco_alto {
+
+            color: #ff4444;
+
+            font-weight: bold;
+
+        }
+
+	a {
+
+    	    color: #00ccff;
+
+    	    text-decoration: none;
+
+    	    font-weight: bold;
+
+	}
+
+
+	a:hover {
+
+    	    text-decoration: underline;
+
+	}
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>InfraLab Alertas</h1>
+
+    <p><a href="/dashboard">Volver al dashboard</a></p>
+
+    <table>
+
+        <tr>
+
+            <th>Servidor</th>
+
+            <th>Tipo</th>
+
+            <th>Mensaje</th>
+
+            <th>Valor</th>
+
+            <th>Fecha</th>
+
+        </tr>
+
+        {% for alerta in alertas %}
+
+        <tr>
+
+            <td><a href="/agente/{{ alerta.servidor }}">{{ alerta.servidor }}</a></td>
+
+            <td class="{{ alerta.tipo }}">{{ alerta.tipo }}</td>
+
+            <td>{{ alerta.mensaje }}</td>
+
+            <td>{{ alerta.valor }}</td>
+
+            <td>{{ alerta.timestamp }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</body>
+
+</html>

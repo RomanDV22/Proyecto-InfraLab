@@ -9,14 +9,16 @@ The goal of the project is to monitor systems, collect metrics, visualize histor
 ## Features
 
 - FastAPI backend
-- PostgreSQL database
-- Live dashboard
+- PostgreSQL database with connection pooling
+- Live dashboard pushed over WebSockets
 - Historical charts
 - Client tracking
 - Request logging
-- Metrics storage
-- Real-time updates
+- Metrics storage with Pydantic validation
+- Threshold-based alerting (CPU/RAM/disk)
+- API key authentication for agents
 - Healthcheck endpoint
+- Prometheus metrics endpoint
 - Modular architecture
 
 ---
@@ -80,6 +82,8 @@ Useful guides:
 - [Startup runbook](docs/runbook.md)
 - [Database documentation](docs/database.md)
 - [Network lab notes](docs/network-lab.md)
+- [Prometheus and Grafana](docs/prometheus.md)
+- [Running the tests](docs/testing.md)
 
 ---
 
@@ -105,6 +109,20 @@ Healthcheck:
 http://SERVER_IP:8000/health
 ```
 
+Alerts:
+
+```text
+http://SERVER_IP:8000/alertas
+```
+
+Prometheus metrics:
+
+```text
+http://SERVER_IP:8000/metrics
+```
+
+See [docs/prometheus.md](docs/prometheus.md) for scraping it with Prometheus and building a Grafana dashboard.
+
 ---
 
 ## Current Capabilities
@@ -120,12 +138,9 @@ http://SERVER_IP:8000/health
 ## Future Improvements
 
 - Docker support
-- Authentication
 - Multi-agent monitoring
-- WebSockets
-- Alerts system
 - Advanced analytics
-- Prometheus integration
+- Alert delivery to Discord/Telegram/webhooks
 
 ---
 

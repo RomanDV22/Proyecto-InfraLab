@@ -88,12 +88,7 @@ const latenciaChart = new Chart(document.getElementById('latenciaChart'), {
 
 
 
-async function actualizarDashboard() {
-
-    const response = await fetch('/dashboard-data');
-
-    const data = await response.json();
-
+function actualizarDashboard(data) {
 
     document.getElementById("clientes").innerText = data.clientes;
 
@@ -126,4 +121,25 @@ async function actualizarDashboard() {
 }
 
 
-setInterval(actualizarDashboard, 5000);
+function conectarWebSocket() {
+
+    const protocolo = location.protocol === "https:" ? "wss" : "ws";
+
+    const socket = new WebSocket(`${protocolo}://${location.host}/ws/dashboard`);
+
+    socket.onmessage = (evento) => {
+
+        actualizarDashboard(JSON.parse(evento.data));
+
+    };
+
+    socket.onclose = () => {
+
+        setTimeout(conectarWebSocket, 3000);
+
+    };
+
+}
+
+
+conectarWebSocket();

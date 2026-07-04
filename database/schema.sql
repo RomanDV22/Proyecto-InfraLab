@@ -41,3 +41,15 @@ ON metricas (servidor, timestamp DESC);
 
 CREATE INDEX IF NOT EXISTS idx_metricas_timestamp
 ON metricas (timestamp DESC);
+
+CREATE TABLE IF NOT EXISTS alertas (
+    id SERIAL PRIMARY KEY,
+    servidor TEXT,
+    tipo TEXT,
+    mensaje TEXT,
+    valor REAL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_alertas_servidor_timestamp
+ON alertas (servidor, timestamp DESC);

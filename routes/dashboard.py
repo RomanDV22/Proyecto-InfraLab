@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
 
 from fastapi.templating import Jinja2Templates
 
 from services.dashboard_service import obtener_dashboard
+from services.ws_manager import manager
 
 router = APIRouter()
 
@@ -35,4 +36,17 @@ def dashboard(request: Request):
 def dashboard_data():
 
     return obtener_dashboard()
+
+
+@router.websocket("/ws/dashboard")
+async def ws_dashboard(websocket: WebSocket):
+
+    await manager.conectar(websocket)
+
+    try:
+        while True:
+            await websocket.receive_text()
+
+    except WebSocketDisconnect:
+        manager.desconectar(websocket)
 
