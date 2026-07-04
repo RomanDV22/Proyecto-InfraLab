@@ -1,29 +1,29 @@
 # InfraLab
 
-InfraLab is a personal infrastructure and observability project built with FastAPI and PostgreSQL.
+InfraLab es un proyecto personal de infraestructura y observabilidad construido con FastAPI y PostgreSQL.
 
-The goal of the project is to monitor systems, collect metrics, visualize historical data and experiment with backend, networking and infrastructure concepts.
-
----
-
-## Features
-
-- FastAPI backend
-- PostgreSQL database with connection pooling
-- Live dashboard pushed over WebSockets
-- Historical charts
-- Client tracking
-- Request logging
-- Metrics storage with Pydantic validation
-- Threshold-based alerting (CPU/RAM/disk)
-- API key authentication for agents
-- Healthcheck endpoint
-- Prometheus metrics endpoint
-- Modular architecture
+El objetivo del proyecto es monitorear sistemas, recolectar métricas, visualizar datos históricos y experimentar con conceptos de backend, redes e infraestructura.
 
 ---
 
-## Tech Stack
+## Características
+
+- Backend con FastAPI
+- Base de datos PostgreSQL con pool de conexiones
+- Dashboard en vivo actualizado por WebSockets
+- Gráficos históricos
+- Seguimiento de clientes
+- Registro de requests
+- Almacenamiento de métricas con validación Pydantic
+- Alertas por umbral (CPU/RAM/disco)
+- Autenticación por API key para los agentes
+- Endpoint de healthcheck
+- Endpoint de métricas para Prometheus
+- Arquitectura modular
+
+---
+
+## Stack Tecnológico
 
 - Python
 - FastAPI
@@ -37,57 +37,57 @@ The goal of the project is to monitor systems, collect metrics, visualize histor
 
 ---
 
-## Installation
+## Instalación
 
-Clone repository:
+Clonar el repositorio:
 
 ```bash
 git clone https://github.com/RomanDV22/Proyecto-InfraLab.git
 ```
 
-Enter project:
+Entrar al proyecto:
 
 ```bash
 cd Infralab
 ```
 
-Create virtual environment:
+Crear el entorno virtual:
 
 ```bash
 python3 -m venv venv
 ```
 
-Activate environment:
+Activar el entorno:
 
 ```bash
 source venv/bin/activate
 ```
 
-Install dependencies:
+Instalar dependencias:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Create the PostgreSQL database schema:
+Crear el esquema de la base de datos PostgreSQL:
 
 ```bash
 psql -U postgres -d infralab -f database/schema.sql
 ```
 
-More details are available in [docs/database.md](docs/database.md).
+Más detalles disponibles en [docs/database.md](docs/database.md).
 
-Useful guides:
+Guías útiles:
 
-- [Startup runbook](docs/runbook.md)
-- [Database documentation](docs/database.md)
-- [Network lab notes](docs/network-lab.md)
-- [Prometheus and Grafana](docs/prometheus.md)
-- [Running the tests](docs/testing.md)
+- [Guía de arranque](docs/runbook.md)
+- [Documentación de la base de datos](docs/database.md)
+- [Notas del laboratorio de red](docs/network-lab.md)
+- [Prometheus y Grafana](docs/prometheus.md)
+- [Cómo correr los tests](docs/testing.md)
 
 ---
 
-## Run Server
+## Levantar el Servidor
 
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
@@ -97,7 +97,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 ## Dashboard
 
-Open browser:
+Abrir en el navegador:
 
 ```text
 http://SERVER_IP:8000/dashboard
@@ -109,49 +109,49 @@ Healthcheck:
 http://SERVER_IP:8000/health
 ```
 
-Alerts:
+Alertas:
 
 ```text
 http://SERVER_IP:8000/alertas
 ```
 
-Prometheus metrics:
+Métricas de Prometheus:
 
 ```text
 http://SERVER_IP:8000/metrics
 ```
 
-See [docs/prometheus.md](docs/prometheus.md) for scraping it with Prometheus and building a Grafana dashboard.
+Ver [docs/prometheus.md](docs/prometheus.md) para scrapearlo con Prometheus y armar un dashboard en Grafana.
 
 ---
 
-## Current Capabilities
+## Capacidades Actuales
 
-- Metrics visualization
-- Historical monitoring
-- Request tracking
-- Live dashboard updates
-- Database persistence
-
----
-
-## Future Improvements
-
-- Docker support
-- Multi-agent monitoring
-- Advanced analytics
-- Alert delivery to Discord/Telegram/webhooks
+- Visualización de métricas
+- Monitoreo histórico
+- Seguimiento de requests
+- Actualizaciones del dashboard en vivo
+- Persistencia en base de datos
 
 ---
 
-## Architecture
+## Mejoras Futuras
+
+- Soporte para Docker
+- Monitoreo multi-agente
+- Analítica avanzada
+- Envío de alertas a Discord/Telegram/webhooks
+
+---
+
+## Arquitectura
 
 ```text
-Client
+Cliente
    ↓
 FastAPI
    ↓
-Services
+Servicios
    ↓
 PostgreSQL
 ```
